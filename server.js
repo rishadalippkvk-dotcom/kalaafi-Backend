@@ -36,7 +36,9 @@ app.use(cors({
         'http://localhost:3002',
         'http://localhost:3003',
         'https://arts.dcas.edu.in',
-        'http://arts.dcas.edu.in'
+        'http://arts.dcas.edu.in',
+        'https://kalaafinew.vercel.app',
+        'https://kalaafi.razzz.in',
     ],
     credentials: true
 }));
