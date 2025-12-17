@@ -25,11 +25,19 @@ const upload = multer({ storage: storage });
 
 const app = express();
 // Use Render's PORT environment variable or default to 5000
-const PORT = process.env.PORT || 5000;
+
 
 // Configure CORS to allow requests from the frontend
+// Includes localhost for development and Hostinger domain for production
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003'],
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:3002',
+        'http://localhost:3003',
+        'https://arts.dcas.edu.in',
+        'http://arts.dcas.edu.in'
+    ],
     credentials: true
 }));
 app.use(express.json());
@@ -267,6 +275,7 @@ app.delete('/api/gallery/:id', (req, res) => {
 });
 
 // Updated to use the PORT variable for Render deployment
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
