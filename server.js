@@ -219,55 +219,68 @@ app.get('/api/gallery', (req, res) => {
 });
 
 app.post('/api/gallery', upload.single('image'), (req, res) => {
-    console.log("Received request:", req.body);
+    try {
+        console.log("Received request:", req.body);
 
-    const images = readData(GALLERY_FILE);
+        const images = readData(GALLERY_FILE);
 
-
-    let imageUrl = req.body.url;
-    if (req.file) {
-        console.log("File uploaded:", req.file);
-        // Updated to work with Render's dynamic URL
-        const host = req.get('host');
-        imageUrl = `${req.protocol}://${host}/uploads/${req.file.filename}`;
-    }
-
-    console.log("Image URL:", imageUrl);
-
-    const newImage = {
-        id: Date.now(),
-        ...req.body,
-        url: imageUrl
-    };
-
-    images.push(newImage);
-    writeData(GALLERY_FILE, images);
-    res.json(newImage);
-});
-
-app.put('/api/gallery/:id', upload.single('image'), (req, res) => {
-    const { id } = req.params;
-    let images = readData(GALLERY_FILE);
-    const index = images.findIndex(img => img.id == id);
-
-    if (index !== -1) {
-        let imageUrl = req.body.url || images[index].url;
+        let imageUrl = req.body.url;
         if (req.file) {
-            // Updated to work with Render's dynamic URL
-            const host = req.get('host');
-            imageUrl = `${req.protocol}://${host}/uploads/${req.file.filename}`;
+            console.log("File uploaded:", req.file);
+            imageUrl = req.file.path;
         }
 
-        images[index] = {
-            ...images[index],
+        if (!imageUrl) {
+            return res.status(400).json({ message: 'Image URL is required' });
+        }
+
+        console.log("Image URL:", imageUrl);
+
+        const newImage = {
+            id: Date.now(),
             ...req.body,
             url: imageUrl
         };
 
+        images.push(newImage);
         writeData(GALLERY_FILE, images);
-        res.json(images[index]);
-    } else {
-        res.status(404).json({ message: 'Image not found' });
+        res.json(newImage);
+    } catch (error) {
+        console.error("Error in POST /api/gallery:", error);
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+});
+
+app.put('/api/gallery/:id', upload.single('image'), (req, res) => {
+    try {
+        const { id } = req.params;
+        let images = readData(GALLERY_FILE);
+        const index = images.findIndex(img => img.id == id);
+
+        if (index !== -1) {
+            let imageUrl = req.body.url || images[index].url;
+            if (req.file) {
+                imageUrl = req.file.path;
+            }
+
+            if (!imageUrl) {
+                return res.status(400).json({ message: 'Image URL is required' });
+            }
+
+            images[index] = {
+                ...images[index],
+                ...req.body,
+                url: imageUrl
+            };
+
+            writeData(GALLERY_FILE, images);
+            res.json(images[index]);
+        } else {
+            res.status(404).json({ message: 'Image not found' });
+        }
+    } catch (error) {
+        console.error("Error in PUT /api/gallery:", error);
+        res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 });
 
