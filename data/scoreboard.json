@@ -649,5 +649,38 @@
     "college": "ASTRA",
     "grade": "C",
     "teamName": "Safamol AK || Jassim "
+  },
+  {
+    "id": 1766054954589,
+    "type": "individual",
+    "category": "offstage",
+    "program": "Story Writing (Engish)",
+    "rank": "1",
+    "score": "5",
+    "college": "EAKHA",
+    "grade": "A",
+    "name": "Nasriya"
+  },
+  {
+    "id": 1766055025108,
+    "type": "individual",
+    "category": "offstage",
+    "program": "Story Writing (Engish)",
+    "rank": "2",
+    "score": "3",
+    "name": "Hadhiya P",
+    "college": "LOKHA",
+    "grade": "B"
+  },
+  {
+    "id": 1766055065513,
+    "type": "individual",
+    "category": "offstage",
+    "program": "Story Writing (Engish)",
+    "rank": "3",
+    "score": "1",
+    "name": "Ayisha Husna",
+    "college": "LOKHA",
+    "grade": "C"
   }
 ]
