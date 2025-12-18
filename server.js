@@ -21,7 +21,7 @@ const storage = new CloudinaryStorage({
         transformation: [{ width: 1000, height: 1000, crop: 'limit' }]
     }
 });
-
+     
 const upload = multer({ storage: storage });
 
 const app = express();
